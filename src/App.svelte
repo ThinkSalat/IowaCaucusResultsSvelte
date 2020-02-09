@@ -39,13 +39,7 @@
 
 <style>
   .main-content-container {
-    display: grid;
-    grid-template-columns: 200px 500px;
+    display: flex;
+    flex-direction: row;
   }
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
 </style>
