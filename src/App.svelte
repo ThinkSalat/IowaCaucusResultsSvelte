@@ -1,26 +1,47 @@
 <script>
-	export let name;
+  import CandidateSidebar from './components/candidateSidebar.svelte';
+  import CaucusResults from './components/caucusResults.svelte';
+  import CountySelector from './components/countySelector.svelte';
+
+  export let results;
+  const candidates = Object.keys(results)
+  const counties = Object.keys(results[candidates[0]])
+
+  let selectedCandidate, selectedCounty;
+
+  const selectCandidate = name => selectedCandidate = name 
+  const selectCounty = name => selectedCounty = name
+
+  const reset = () => {
+    selectedCandidate = ''
+    selectedCounty = ''
+  }
+
+  $: data = selectedCandidate && selectedCounty ? results[selectedCandidate][selectedCounty] : {}
+
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+  <h1>Iowa Caucus Results</h1>
+  <h2>Candidate: {selectedCandidate || 'none'}</h2>
+  <h2>County: {selectedCounty || 'none'}</h2>
+  <button on:click={reset}>Reset</button>
+
+  <CountySelector {...{ counties, selectCounty }}/>
+
+  <div class='main-content-container'>
+    <CandidateSidebar {...{ candidates, selectCandidate }} />
+    <CaucusResults data={data} />
+  </div>
+
+
 </main>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
+  .main-content-container {
+    display: grid;
+    grid-template-columns: 200px 500px;
+  }
 
 	@media (min-width: 640px) {
 		main {
